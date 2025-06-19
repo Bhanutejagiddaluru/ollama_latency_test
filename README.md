@@ -17,6 +17,17 @@ This project benchmarks the performance of different prompt/output format combin
   - `resume.txt`, `resume.json`
 
 ## 📊 Test Matrix
+
+16 format combinations of:
+- Job Description: `txt` or `json`
+- Resume: `txt` or `json`
+- Prompt: `txt` or `json`
+- Output: `txt` or `json`
+
+Each combination is benchmarked for:
+- Response Time (ms)
+- Output Size (chars)
+- Estimated Tokens
 ## results 1: 
 ![test1_results](https://github.com/user-attachments/assets/3528ee62-cb59-49b1-b939-b84cdb0e3b61)
 
@@ -52,6 +63,10 @@ This project benchmarks the performance of different prompt/output format combin
 | #2     | txt  | txt    | txt    | json   | **22458** | 2011   | 503    |
 | #1     | txt  | txt    | txt    | txt    | **21375** | 1953   | 488    |
 
+
+
+
+
 ### ✅ Recommendations
 
 - ✅ Use `promptFormat = json` for faster, focused results
@@ -60,6 +75,18 @@ This project benchmarks the performance of different prompt/output format combin
 - ⚖️ `promptFormat = txt` yields longer, more expressive answers, but is slower
 
 ---
+
+## 🧠 Final Conclusion (Based on Test Set 1 & 2)
+
+### 🔍 Format Comparison Summary
+
+| Format Type         | Avg Time (ms) | Avg Tokens | Observation                                                         |
+|---------------------|---------------|------------|----------------------------------------------------------------------|
+| `Prompt: txt`       | 17,000–22,000 | 400–500    | Slower due to verbose responses, higher token count                 |
+| `Prompt: json`      | 7,600–15,000  | 150–300    | Much faster, more concise answers                                   |
+| `Output: json`      | Slightly faster| –         | Clean structure, easier to parse or reuse                           |
+| `JD/Resume: json`   | Neutral        | –          | Doesn't impact latency much, improves code simplicity   
+
 
 ## 🧠 Conclusion
 
