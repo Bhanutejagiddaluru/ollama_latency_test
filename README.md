@@ -29,6 +29,38 @@ This project benchmarks the performance of different prompt/output format combin
 ![avg_time_by_prompt_format](https://github.com/user-attachments/assets/e880dcf0-b8bf-4bca-96a3-c48452eb642a)
 
 
+### 🔎 Format Comparison Summary
+
+| Format                | Avg Time (ms) | Avg Tokens | Trend                                                                 |
+|----------------------|----------------|------------|-----------------------------------------------------------------------|
+| `Prompt: txt`        | 17,500–22,000  | 400–500    | ✏️ Richer language, more verbose → slower responses                    |
+| `Prompt: json`       | 7,600–15,000   | 150–300    | ⚡ More concise, less context bloat → faster, leaner responses         |
+| `Output: json`       | ~ same or faster | -        | JSON output is compact and easy to handle                             |
+| `JD/Resume: json`    | Neutral         | -          | JD/resume format has minimal impact alone                             |
+
+### 🏁 Fastest Combinations
+
+| Test # | JD   | Resume | Prompt | Output | Time (ms) | Chars | Tokens |
+|--------|------|--------|--------|--------|-----------|--------|--------|
+| #4     | txt  | txt    | json   | json   | **7609**  | 632    | 158    |
+| #16    | json | json   | json   | json   | **11142** | 935    | 234    |
+
+### 🐌 Slowest Combinations
+
+| Test # | JD   | Resume | Prompt | Output | Time (ms) | Chars | Tokens |
+|--------|------|--------|--------|--------|-----------|--------|--------|
+| #2     | txt  | txt    | txt    | json   | **22458** | 2011   | 503    |
+| #1     | txt  | txt    | txt    | txt    | **21375** | 1953   | 488    |
+
+### ✅ Recommendations
+
+- ✅ Use `promptFormat = json` for faster, focused results
+- ✅ Pair with `outputFormat = json` for structured, lightweight output
+- 🆗 `JD/Resume` format (txt/json) is flexible — choose based on your pipeline
+- ⚖️ `promptFormat = txt` yields longer, more expressive answers, but is slower
+
+---
+
 ## 🧠 Conclusion
 
 - 🔥 Fastest: JSON prompt + JSON output (Test #16) → ~11s
