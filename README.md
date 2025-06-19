@@ -67,23 +67,38 @@ Each combination is benchmarked for:
 
 
 
-### ✅ Recommendations
+## 🏁 Final Conclusion: Best Format for Ollama LLM Latency
 
-- ✅ Use `promptFormat = json` for faster, focused results
-- ✅ Pair with `outputFormat = json` for structured, lightweight output
-- 🆗 `JD/Resume` format (txt/json) is flexible — choose based on your pipeline
-- ⚖️ `promptFormat = txt` yields longer, more expressive answers, but is slower
+After evaluating all 32 test cases (from Test 1 and Test 2), covering combinations of:
+
+- `Job Description`: `txt` or `json`
+- `Resume`: `txt` or `json`
+- `Prompt Format`: `txt` or `json`
+- `Output Format`: `txt` or `json`
+
+We observed consistent trends in latency, verbosity, and token usage.
+
+### 🧠 Key Insights
+
+| Aspect                 | Observation                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| 🔥 Fastest combo        | `json + json + json + json` (Test #16) → **7609ms** to **11142ms**          |
+| 🐢 Slowest combo        | `txt + txt + txt + json` or `json + txt + txt + json` → **21300ms+**        |
+| ✨ Best balance         | `json + json + json + json` → Fast, structured, easy to parse               |
+| 🧾 Most verbose         | `txt + txt + txt + txt` → Highest token count, more natural, slower         |
+| ⚡ Prompt Format impact | Switching from `txt` → `json` gave **40–60% speedup** consistently          |
+
+### ✅ Recommended Configuration
+
+| Component          | Format     | Reason                                                           |
+|-------------------|------------|------------------------------------------------------------------|
+| **Job Description**| `json`     | Structured, easier to manage                                     |
+| **Resume**         | `json`     | No slowdown, simplifies field parsing                           |
+| **Prompt Format**  | ✅ `json`  | Fastest, cleanest LLM input                                      |
+| **Output Format**  | ✅ `json`  | Easy to log, save, reuse in apps                                |
+
+> 🏆 **Best performing config:**  
+> **JD: `json` + Resume: `json` + Prompt: `json` + Output: `json`**  
+> → Delivers fast, concise, structured responses with minimal overhead.
 
 ---
-
-
-## 🧠 Conclusion
-
-- 🔥 Fastest: JSON prompt + JSON output (Test #16) → ~11s
-- 🐢 Slowest: TXT prompt + JSON output (Test #2) → ~22s
-- 📋 JSON prompts consistently reduce latency and token count
-- 📌 Recommended setup: `promptFormat = json`, `outputFormat = json`
-
----
-
-Made with ❤️ for reproducible LLM performance testing.
