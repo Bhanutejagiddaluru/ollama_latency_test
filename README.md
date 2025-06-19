@@ -76,17 +76,6 @@ Each combination is benchmarked for:
 
 ---
 
-## 🧠 Final Conclusion (Based on Test Set 1 & 2)
-
-### 🔍 Format Comparison Summary
-
-| Format Type         | Avg Time (ms) | Avg Tokens | Observation                                                         |
-|---------------------|---------------|------------|----------------------------------------------------------------------|
-| `Prompt: txt`       | 17,000–22,000 | 400–500    | Slower due to verbose responses, higher token count                 |
-| `Prompt: json`      | 7,600–15,000  | 150–300    | Much faster, more concise answers                                   |
-| `Output: json`      | Slightly faster| –         | Clean structure, easier to parse or reuse                           |
-| `JD/Resume: json`   | Neutral        | –          | Doesn't impact latency much, improves code simplicity   
-
 
 ## 🧠 Conclusion
 
