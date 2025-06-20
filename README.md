@@ -78,6 +78,8 @@ After evaluating all 32 test cases (from Test 1 and Test 2), covering combinatio
 
 We observed consistent trends in latency, verbosity, and token usage.
 
+---
+
 ### 🧠 Key Insights
 
 | Aspect                 | Observation                                                                 |
@@ -88,6 +90,9 @@ We observed consistent trends in latency, verbosity, and token usage.
 | 🧾 Most verbose         | `txt + txt + txt + txt` → Highest token count, more natural, slower         |
 | ⚡ Prompt Format impact | Switching from `txt` → `json` gave **40–60% speedup** consistently          |
 
+---
+
+
 ### ✅ Recommended Configuration
 
 | Component          | Format     | Reason                                                           |
@@ -97,8 +102,13 @@ We observed consistent trends in latency, verbosity, and token usage.
 | **Prompt Format**  | ✅ `json`  | Fastest, cleanest LLM input                                      |
 | **Output Format**  | ✅ `json`  | Easy to log, save, reuse in apps                                |
 
+---
+
 > 🏆 **Best performing config:**  
 > **JD: `json` + Resume: `json` + Prompt: `json` + Output: `json`**  
 > → Delivers fast, concise, structured responses with minimal overhead.
+
+
+
 
 ---
