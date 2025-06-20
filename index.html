@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Latency Test Runner</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+    button {
+      padding: 5px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .completed {
+      background-color: #4CAF50;
+      color: white;
+    }
+    td.status {
+      font-weight: bold;
+    }
+    .result-cell {
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>ollama mistral model- Latency Test Runner</h2>
+
+<table id="testTable">
+  <thead>
+    <tr>
+      <th>Test #</th>
+      <th>Job Description Type</th>
+      <th>Resume Type</th>
+      <th>Prompt Format</th>
+      <th>Output Format</th>
+      <th>Action</th>
+      <th>ollama Status</th>
+      <th>Time (ms)</th>
+      <th>Chars</th>
+      <th>Tokens</th>
+    </tr>
+  </thead>
+  <tbody id="testTableBody"></tbody>
+</table>
+
+<div style="margin-top: 30px; text-align: center;">
+  <button id="completeAllBtn" onclick="markCompleted()">Mark All Tests Completed</button>
+</div>
+
+<script>
+  const { ipcRenderer } = require('electron');
+
+  const tests = [
+    ["txt", "txt", "txt", "txt"],
+    ["txt", "txt", "txt", "json"],
+    ["txt", "txt", "json", "txt"],
+    ["txt", "txt", "json", "json"],
+    ["txt", "json", "txt", "txt"],
+    ["txt", "json", "txt", "json"],
+    ["txt", "json", "json", "txt"],
+    ["txt", "json", "json", "json"],
+    ["json", "txt", "txt", "txt"],
+    ["json", "txt", "txt", "json"],
+    ["json", "txt", "json", "txt"],
+    ["json", "txt", "json", "json"],
+    ["json", "json", "txt", "txt"],
+    ["json", "json", "txt", "json"],
+    ["json", "json", "json", "txt"],
+    ["json", "json", "json", "json"]
+  ];
+
+  const tableBody = document.getElementById('testTableBody');
+
+  tests.forEach((row, index) => {
+    const testId = index + 1;
+    const [jd, resume, prompt, output] = row;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${testId}</td>
+      <td>${jd}</td>
+      <td>${resume}</td>
+      <td>${prompt}</td>
+      <td>${output}</td>
+      <td><button onclick="runTest(${testId}, '${jd}', '${resume}', '${prompt}', '${output}', this)">Run Test</button></td>
+      <td id="status-${testId}" class="status">—</td>
+      <td id="time-${testId}">—</td>
+      <td id="chars-${testId}">—</td>
+      <td id="tokens-${testId}">—</td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  function markCompleted() {
+    const btn = document.getElementById('completeAllBtn');
+    btn.textContent = '✅ Completed';
+    btn.classList.add('completed');
+    btn.disabled = true;
+  }
+
+  async function runTest(testId, jd, resume, prompt, output, button) {
+    document.getElementById(`status-${testId}`).textContent = '⏳ Running...';
+    document.getElementById(`time-${testId}`).textContent = '-';
+    document.getElementById(`chars-${testId}`).textContent = '-';
+    document.getElementById(`tokens-${testId}`).textContent = '-';
+    button.disabled = true;
+
+    try {
+      const result = await ipcRenderer.invoke('run-test', testId, jd, resume, prompt, output);
+      if (result.success) {
+        document.getElementById(`status-${testId}`).textContent = '✅ Done';
+        document.getElementById(`time-${testId}`).textContent = result.time ?? '-';
+        document.getElementById(`chars-${testId}`).textContent = result.length ?? '-';
+        document.getElementById(`tokens-${testId}`).textContent = result.tokens ?? '-';
+        button.textContent = '✅ Done';
+        button.classList.add('completed');
+      } else {
+        document.getElementById(`status-${testId}`).textContent = `❌ ${result.error}`;
+        button.disabled = false;
+      }
+    } catch (e) {
+      document.getElementById(`status-${testId}`).textContent = '❌ IPC Error';
+      button.disabled = false;
+    }
+  }
+</script>
+
+</body>
+</html>
